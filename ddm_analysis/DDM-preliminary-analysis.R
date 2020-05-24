@@ -4,8 +4,8 @@ library(ggplot2)
 require(gridExtra)
 library(dplyr)
 
-
-data <- `192837465_media_decision_making_task_2222.25.22_12h24.38.153`
+# Import data and data structure
+data <- <HERE INSERT THE IMPORTED DATA>
 
 dat <- select(data, c(key_resp_3.keys, key_resp_3.rt, Z_movie, M_movie))
 dat[dat==""]<-NA
@@ -93,6 +93,7 @@ for (i in 1:nrow(dat)) {
   
 }  
 
+# Make RT data for each decision type
 #=========
 # 0V1A #
 RT_0V1A <- dat$key_resp_3.rt[dat$decisiontype=='0V+1A']
@@ -129,7 +130,7 @@ subjID_1Vne1A <- rep(1, length(RT_1Vne1A))
 RT_1Vne1A <- as.numeric(RT_1Vne1A)
 rtdata_1Vne1A <- data.frame(RT = RT_1Vne1A, choice = choice_1Vne1A, subjID = subjID_1Vne1A)
 
-
+# Plotting the RT data
 #=========
 # 0V1A #
 ggplot(data = rtdata_0V1A, aes(x=RT,group=choice)) + 
@@ -191,6 +192,7 @@ histplot_1Vne1A <- ggplot(rtdata_1Vne1A,aes(x=RT,group=choice))+
   theme_bw()
 grid.arrange(densityplot_1Vne1A, histplot_1Vne1A, ncol=2)
 
+# Fitting the DDM model
 #=========
 # 0V1A #
 output_0V1A <- choiceRT_ddm_single(
