@@ -86,6 +86,7 @@ for (i in 1:nrow(dat)) {
 
 for (i in 1:nrow(dat)) {
   if (dat$decisiontype[i] == '-1V+0A') {
+    dat$reverse[i] <- "True"
     dat$decisiontype[i] <- '1V+0A'
     if (dat$key_resp_3.keys[i] == 1) {
       dat$key_resp_3.keys[i] <- 2
@@ -95,6 +96,7 @@ for (i in 1:nrow(dat)) {
   }
   
   if (dat$decisiontype[i] == '-1V+1A') {
+    dat$reverse[i] <- "True"
     dat$decisiontype[i] <- '1V-1A'
     if (dat$key_resp_3.keys[i] == 1) {
       dat$key_resp_3.keys[i] <- 2
@@ -104,6 +106,7 @@ for (i in 1:nrow(dat)) {
   }
   
   if (dat$decisiontype[i] == '0V-1A') {
+    dat$reverse[i] <- "True"
     dat$decisiontype[i] <- '0V+1A'
     if (dat$key_resp_3.keys[i] == 1) {
       dat$key_resp_3.keys[i] <- 2
@@ -113,6 +116,7 @@ for (i in 1:nrow(dat)) {
   }
   
   if (dat$decisiontype[i] == '-1V-1A') {
+    dat$reverse[i] <- "True"
     dat$decisiontype[i] <- '1V+1A'
     if (dat$key_resp_3.keys[i] == 1) {
       dat$key_resp_3.keys[i] <- 2
@@ -158,7 +162,6 @@ rtdata_0V0A <- data.frame(RT = RT_0V0A, choice = choice_0V0A, subjID = subjID_0V
 RT_1Vne1A <- dat$key_resp_3.rt[dat$decisiontype=='1V-1A']
 choice_1Vne1A <- dat$key_resp_3.keys[dat$decisiontype=='1V-1A']
 subjID_1Vne1A <- dat$subjID[dat$decisiontype=='1V-1A']
-RT_1Vne1A[57] <- "6.75"
 RT_1Vne1A <- as.numeric(RT_1Vne1A)
 rtdata_1Vne1A <- data.frame(RT = RT_1Vne1A, choice = choice_1Vne1A, subjID = subjID_1Vne1A)
 
@@ -190,3 +193,74 @@ for (i in 0:(length(file.name)-1)){
 } 
 
 write.csv(pilot2hddm_clean, "~/OneDrive/projects/mood_management/data/pilot2hddm_clean.csv")
+
+# Plot data==========
+ggplot(data = rtdata_0V1A, aes(x=RT,group=choice)) + 
+  geom_density(aes(color=choice)) +
+  theme_bw()
+ggplot(rtdata_0V1A, aes(choice)) +
+  geom_bar() + ylab('0V1A')
+densityplot_0V1A <- ggplot(rtdata_0V1A,aes(x=RT,group=choice))+
+  geom_histogram(aes(y=..density..,fill=choice),position="dodge")+
+  theme_bw()
+histplot_0V1A <- ggplot(rtdata_0V1A,aes(x=RT,group=choice))+
+  geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
+  theme_bw()
+grid.arrange(densityplot_0V1A, histplot_0V1A, ncol=2)
+
+#=========
+# 1V0A #
+ggplot(data = rtdata_1V0A, aes(x=RT,group=choice)) + 
+  geom_density(aes(color=choice)) +
+  theme_bw()
+ggplot(rtdata_1V0A, aes(choice)) +
+  geom_bar() + ylab('1V0A')
+densityplot_1V0A <- ggplot(rtdata_1V0A,aes(x=RT,group=choice))+
+  geom_histogram(aes(y=..density..,fill=choice),position="dodge")+
+  theme_bw()
+histplot_1V0A <- ggplot(rtdata_1V0A,aes(x=RT,group=choice))+
+  geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
+  theme_bw()
+grid.arrange(densityplot_1V0A, histplot_1V0A, ncol=2)
+#=========
+# 1V1A #
+ggplot(data = rtdata_1V1A, aes(x=RT,group=choice)) + 
+  geom_density(aes(color=choice)) +
+  theme_bw()
+ggplot(rtdata_1V1A, aes(choice)) +
+  geom_bar() + ylab('1V1A')
+densityplot_1V1A <- ggplot(rtdata_1V1A,aes(x=RT,group=choice))+
+  geom_histogram(aes(y=..density..,fill=choice),position="dodge")+
+  theme_bw()
+histplot_1V1A <- ggplot(rtdata_1V1A,aes(x=RT,group=choice))+
+  geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
+  theme_bw()
+grid.arrange(densityplot_1V1A, histplot_1V1A, ncol=2)
+#=========
+# 0V0A #
+ggplot(data = rtdata_0V0A, aes(x=RT,group=choice)) + 
+  geom_density(aes(color=choice)) +
+  theme_bw()
+ggplot(rtdata_0V0A, aes(choice)) +
+  geom_bar() + ylab('0V0A')
+densityplot_0V0A <- ggplot(rtdata_0V0A,aes(x=RT,group=choice))+
+  geom_histogram(aes(y=..density..,fill=choice),position="dodge")+
+  theme_bw()
+histplot_0V0A <- ggplot(rtdata_0V0A,aes(x=RT,group=choice))+
+  geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
+  theme_bw()
+grid.arrange(densityplot_0V0A, histplot_0V0A, ncol=2)
+#=========
+# 1V-1A #
+ggplot(data = rtdata_1Vne1A, aes(x=RT,group=choice)) + 
+  geom_density(aes(color=choice)) +
+  theme_bw()
+ggplot(rtdata_1Vne1A, aes(choice)) +
+  geom_bar()+ ylab('1V-1A')
+densityplot_1Vne1A <- ggplot(rtdata_1Vne1A,aes(x=RT,group=choice))+
+  geom_histogram(aes(y=..density..,fill=choice),position="dodge")+
+  theme_bw()
+histplot_1Vne1A <- ggplot(rtdata_1Vne1A,aes(x=RT,group=choice))+
+  geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
+  theme_bw()
+grid.arrange(densityplot_1Vne1A, histplot_1Vne1A, ncol=2)
