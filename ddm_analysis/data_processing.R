@@ -187,7 +187,7 @@ for (i in 0:(length(file.name)-1)){
   mean <- mean(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i])
   sd <- sd(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i])
   cut_1 <- mean + 3* sd
-  cut_2 <- 0.250
+  cut_2 <- 0.150
   pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i][pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] > cut_1] <- rep(cut_1,sum(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] > cut_1))
   pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i][pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] <= cut_2] <- rep(cut_2,sum(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] <= cut_2))
 } 
