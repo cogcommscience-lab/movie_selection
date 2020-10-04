@@ -4,19 +4,39 @@ require(gridExtra)
 library(dplyr)
 
 # Read data ======================
-file.name <- paste("~/OneDrive/projects/mood_management/data/pilot2/", list.files(path = "~/OneDrive/projects/mood_management/data/pilot2", pattern = ".csv"), sep="")
-file.name <- file.name[-8]
+file.name <- paste("~/OneDrive/projects/mood_management/data/summer/experiment_data/",
+                   list.files(path = "~/OneDrive/projects/mood_management/data/summer/experiment_data/", pattern = ".csv"),
+                   sep="")
+file.name <- file.name[-length(file.name)]
 file.name
 
+# remove dataset the participants notes as unusable
+distracted_index = c('85652', '91586', '91432', '66068', '83846', '67148', '81324', '91469', '80288', '83217', '90141')
+for (index in distracted_index) {
+  file.name <- file.name[-which(grepl(index, file.name))]
+}
+
 data <- vector(mode = "list", length = length(file.name))
-dat <- data.frame()
 for (i in 1:length(file.name)) {
   data[[i]] <- read.csv(file.name[i])
+}
+
+# remove dataset that contain not enough data
+for (i in 1:length(file.name)) {
+  if (!(nrow(data[[i]]) == 202)) {
+    print('remove')
+    print(i)
+    data <- data[-i]
+  }
+}
+
+dat <- data.frame()
+for (i in 1:length(data)) {
   dat <- rbind(dat, data[[i]])
 }
 
 # Data processing ======================
-dat <- select(dat, c(key_resp_3.keys, key_resp_3.rt, Z_movie, M_movie))
+dat <- select(dat, c(key_resp_3.keys, key_resp_3.rt, Z_movie, M_movie, participant))
 dat[dat==""]<-NA
 dat <- na.omit(dat)
 dat$Z_movie<-substr(dat$Z_movie, 6, 7)
@@ -127,7 +147,33 @@ for (i in 1:nrow(dat)) {
   
 }  
 
-dat$subjID <- rep(1:7, each=140)
+dat$subjID <- rep(1:length(data), each=140)
+
+
+# delete dataset that contain reponse other than 0 or 1
+delete_sub = unique(dat$subjID[!(dat$key_resp_3.keys %in% c(1,2))])
+delete_sub
+dat = filter(dat, (!subjID %in% delete_sub))
+
+
+dat$key_resp_3.rt <- as.numeric(dat$key_resp_3.rt)
+dat_uncleaned <- dat
+boxplot(log(dat$key_resp_3.rt))
+plot(dat$key_resp_3.rt)
+
+# Clean the data (removing outliers)
+# We use a fixed fast RT cutoff and used a 3 sd slow RT cutoff
+for (i in dat$subjID) {
+  mean <- mean(dat$key_resp_3.rt[dat$subjID==i])
+  sd <- sd(dat$key_resp_3.rt[dat$subjID==i])
+  cut_1 <- mean + 3 * sd
+  cut_2 <- 0.250
+  dat$key_resp_3.rt[dat$subjID==i][dat$key_resp_3.rt[dat$subjID==i] > cut_1] <- rep(cut_1,sum(dat$key_resp_3.rt[dat$subjID==i] > cut_1))
+  dat$key_resp_3.rt[dat$subjID==i][dat$key_resp_3.rt[dat$subjID==i] <= cut_2] <- rep(cut_2,sum(dat$key_resp_3.rt[dat$subjID==i] <= cut_2))
+} 
+
+
+plot(dat$key_resp_3.rt)
 
 # Seperate file ======================
 # 0V1A #
@@ -178,21 +224,9 @@ pilot2hddm$response <- pilot2hddm$choice
 levels(pilot2hddm$response)[levels(pilot2hddm$response)==2] <- "0"
 pilot2hddm <- select(pilot2hddm, c("subj_idx", "stim", "rt", "response"))
 pilot2hddm <- pilot2hddm[order(pilot2hddm$subj_idx),]
-write.csv(pilot2hddm, "~/OneDrive/projects/mood_management/data/pilot2hddm.csv")
+pilot2hddm$participant <- dat$participant
+write.csv(pilot2hddm, "~/OneDrive/projects/mood_management/data/summer/summer_hddm_cleaned.csv")
 
-# Clean the data (removing outliers)
-# We use a fixed fast RT cutoff and used a 3 sd slow RT cutoff
-pilot2hddm_clean <- pilot2hddm
-for (i in 0:(length(file.name)-1)){
-  mean <- mean(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i])
-  sd <- sd(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i])
-  cut_1 <- mean + 3* sd
-  cut_2 <- 0.150
-  pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i][pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] > cut_1] <- rep(cut_1,sum(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] > cut_1))
-  pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i][pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] <= cut_2] <- rep(cut_2,sum(pilot2hddm_clean$rt[pilot2hddm_clean$subj_idx==i] <= cut_2))
-} 
-
-write.csv(pilot2hddm_clean, "~/OneDrive/projects/mood_management/data/pilot2hddm_clean.csv")
 
 # Plot data==========
 ggplot(data = rtdata_0V1A, aes(x=RT,group=choice)) + 
@@ -264,3 +298,4 @@ histplot_1Vne1A <- ggplot(rtdata_1Vne1A,aes(x=RT,group=choice))+
   geom_density(aes(color=choice,fill=choice), adjust = 2, alpha = .4) +
   theme_bw()
 grid.arrange(densityplot_1Vne1A, histplot_1Vne1A, ncol=2)
+
