@@ -293,8 +293,7 @@ mat <- matrix(0,nrow=14*4,ncol=14*4)
 rownames(mat) <- rows
 colnames(mat) <- rows
 
-# If choice the Z movie, mat[Z, M] += 1
-# If choice the M movie, mat[M, Z] += 1
+
 for (i in 1:nrow(dat)) {
   if (dat$choice[i] == 1) {
     row.index = dat[i, "Z"]
@@ -309,6 +308,12 @@ for (i in 1:nrow(dat)) {
     mat[row.index, col.index] = mat[row.index, col.index] + 1
   }
 }
+mat_dat <- expand.grid(X=rows, Y=columns)
+mat_dat$Z <- c(mat)
+ggplot(mat_dat, aes(X, Y, fill= Z)) + 
+  geom_tile()
+
+
 
 p_mat <- matrix(,nrow=14*4,ncol=14*4)
 rownames(p_mat) <- rows
@@ -346,7 +351,6 @@ p_mat_dat$Z <- c(p_mat)
 p_mat_dat_tri$Z <- c(p_mat_tri)
 p_mat_dat_tri_study1 <- p_mat_dat_tri
 
-# store the plot as ggplot 
 p1 <- ggplot(p_mat_dat_tri_study1, aes(Y, X, fill= Z)) + 
   geom_tile() +
   geom_segment(aes(x = 14.5 , y = Inf, xend = 14.5, yend = 14.5)) +

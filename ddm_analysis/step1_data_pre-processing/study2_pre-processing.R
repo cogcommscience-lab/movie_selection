@@ -1,4 +1,3 @@
-library(hBayesDM)
 library(ggplot2)
 require(gridExtra)
 library(dplyr)
@@ -237,6 +236,157 @@ for (i in dat$subjID) {
   dat$key_resp_3.rt[dat$subjID==i][dat$key_resp_3.rt[dat$subjID==i] > cut_1] <- rep(cut_1,sum(dat$key_resp_3.rt[dat$subjID==i] > cut_1))
   dat$key_resp_3.rt[dat$subjID==i][dat$key_resp_3.rt[dat$subjID==i] <= cut_2] <- rep(cut_2,sum(dat$key_resp_3.rt[dat$subjID==i] <= cut_2))
 } 
+
+
+# Demographic tables
+# make a vector for all participant id
+participants <- unique(dat$participant)
+
+# get all demographics information from meta_data
+demographics <- meta_data
+
+age <- as.numeric(demographics$Q3[demographics$id %in% participants])
+race <- as.factor(demographics$Q5[demographics$id %in% participants])
+gender <- as.factor(demographics$Q7[demographics$id %in% participants])
+standing <- as.factor(demographics$Q9[demographics$id %in% participants])
+english_speaking <- as.factor(demographics$Q11[demographics$id %in% participants])
+
+# make a demographic dataframe
+demo_df <- data.frame("participants" = participants,
+                      "age" = age,
+                      "race" = race,
+                      "gender" = gender,
+                      "standing" = standing,
+                      "english_speaking" = english_speaking)
+
+# calculate the frequency (count and percentage) for all demographics
+table(demo_df$age)
+prop.table(table(demo_df$age))
+table(demo_df$race)
+prop.table(table(demo_df$race))
+table(demo_df$gender)
+prop.table(table(demo_df$gender))
+table(demo_df$standing)
+prop.table(table(demo_df$standing))
+table(demo_df$english_speaking)
+prop.table(table(demo_df$english_speaking))
+
+
+
+### making plot S5
+rows = c()
+for (i in 1:14){
+  rows = c(rows, paste("HH", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("HL", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("LH", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("LL", i, sep=""))
+}
+
+columns = rows
+mat <- matrix(0,nrow=14*4,ncol=14*4)
+rownames(mat) <- rows
+colnames(mat) <- rows
+
+# If choice the Z movie, mat[Z, M] += 1
+# If choice the M movie, mat[M, Z] += 1
+for (i in 1:nrow(dat)) {
+  if (dat$choice[i] == 1) {
+    row.index = dat[i, "Z"]
+    col.index = dat[i, "M"]
+    
+    mat[row.index, col.index] = mat[row.index, col.index] + 1
+  }
+  if (dat$choice[i] == 2) {
+    row.index = dat[i, "M"]
+    col.index = dat[i, "Z"]
+    
+    mat[row.index, col.index] = mat[row.index, col.index] + 1
+  }
+}
+
+p_mat <- matrix(,nrow=14*4,ncol=14*4)
+rownames(p_mat) <- rows
+colnames(p_mat) <- rows
+for (i in 1:nrow(p_mat)) {
+  for (j in 1:ncol(p_mat)) {
+    p_mat[i,j] <- mat[i,j] / (mat[i,j] + mat[j,i])
+  }
+}
+p_mat_tri <- p_mat
+p_mat_tri[upper.tri(p_mat_tri)] <- 0.5
+p_mat_tri[upper.tri(p_mat_tri)] <- 0.5
+diag(p_mat_tri) <- 0.5
+
+
+# Rename the rows and columns from HH to PH, LH to NH, etc.
+rows = c()
+for (i in 1:14){
+  rows = c(rows, paste("PH", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("PL", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("NH", i, sep=""))
+}
+for (i in 1:14){
+  rows = c(rows, paste("NL", i, sep=""))
+}
+
+
+p_mat_dat <- expand.grid(X=rows, Y=rows)
+p_mat_dat_tri <- expand.grid(X=rows, Y=rows)
+
+p_mat_dat$Z <- c(p_mat)
+p_mat_dat_tri$Z <- c(p_mat_tri)
+p_mat_dat_tri_study1 <- p_mat_dat_tri
+
+# store the plot as ggplot 
+p2 <- ggplot(p_mat_dat, aes(Y, X, fill= Z)) + 
+  geom_tile() +
+  geom_segment(aes(x = 14.5 , y = Inf, xend = 14.5, yend = 14.5)) +
+  geom_segment(aes(x = 28.5 , y = Inf, xend = 28.5, yend = 28.5)) + 
+  geom_segment(aes(x = 42.5 , y = Inf, xend = 42.5, yend = 42.5)) + 
+  geom_segment(aes(x = 0 , y = 14.5, xend = 14.5, yend = 14.5)) + 
+  geom_segment(aes(x = 0 , y = 28.5, xend = 28.5, yend = 28.5)) + 
+  geom_segment(aes(x = 0 , y = 42.5, xend = 42.5, yend = 42.5)) + 
+  scale_fill_gradient2(low = "blue",
+                     mid = "white",
+                     high = "yellow",
+                     midpoint = 0.5)  +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        axis.title.x = element_text(size = 15),
+        axis.title.y = element_text(size = 15),
+        plot.title = element_text(size = 18),
+        legend.title = element_text(size=18),
+        legend.text = element_text(size=12)) +
+  scale_x_discrete(position = "top") +
+  labs(fill = "Probability",
+       x = "Movie Option 2",
+       y = "Movie Option 1",
+       title = "Study 2")
+
+
+library(grid)
+library(gridExtra)
+library(gtable)
+legend = gtable_filter(ggplot_gtable(ggplot_build(p1)), "guide-box")
+grid.arrange(arrangeGrob(p1 + theme(legend.position="none"),
+                         p2 + theme(legend.position="none"), 
+                         nrow = 1),
+             legend, nrow = 1, 
+             top = textGrob("Probability of Average Movie Decision Choice",gp=gpar(fontsize=22)),
+             widths=c(10,1))
+
+
+
+
 
 # Seperate file ======================
 # 0V1A #
