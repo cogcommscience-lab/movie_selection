@@ -1,6 +1,8 @@
 # movie_selection
 A project organized around understanding decision making and movie selection.
 
+## Directory Tree
+```
 .
 ├── data
 │   ├── study1.csv
@@ -25,6 +27,7 @@ A project organized around understanding decision making and movie selection.
     ├── study_1_ddm_exploratory_analysis.csv
     ├── study2_cell_mean_trace_df.csv
     └── study2_full_regression_hypothesis.csv
+```
 
 ## Generate Movie Plot Summaries
 This code takes a corpus of movie summaries and uses NLP to reduce these summaries into several short sentences. You can think of these as summaries of movie summaries. Once summaries are generated, the ANEW dictionary is used to characterize the arousal, dominance,and valence score for each summary.
