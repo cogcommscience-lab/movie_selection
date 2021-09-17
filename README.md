@@ -1,6 +1,30 @@
 # movie_selection
 A project organized around understanding decision making and movie selection.
 
+.
+├── data
+│   ├── study1.csv
+│   ├── study1_measured_mood.csv
+│   └── study2.csv
+├── step1_data_pre-processing
+│   ├── study1_pre-processing.R
+│   ├── study2_induction_check.R
+│   └── study2_pre-processing.R
+├── step2_Fitting_HDDM_study_1.ipynb
+├── step3_Inference_testing_study_1.ipynb
+├── step4_Fitting_regression_study_2.ipynb
+├── step5_Inference_testing_study_2.ipynb
+├── step6_Cell_means_study_2.ipynb
+├── step7_convergence_test
+│   ├── convergence_study1.ipynb
+│   └── convergence_study2.ipynb
+└── step8_plot
+    ├── plots.ipynb
+    ├── study1_correlation_traces.csv
+    ├── study_1_ddm_confirmative_analysis.csv
+    ├── study_1_ddm_exploratory_analysis.csv
+    ├── study2_cell_mean_trace_df.csv
+    └── study2_full_regression_hypothesis.csv
 
 ## Generate Movie Plot Summaries
 This code takes a corpus of movie summaries and uses NLP to reduce these summaries into several short sentences. You can think of these as summaries of movie summaries. Once summaries are generated, the ANEW dictionary is used to characterize the arousal, dominance,and valence score for each summary.
