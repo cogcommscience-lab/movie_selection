@@ -4,29 +4,69 @@ A project organized around understanding decision making and movie selection.
 ## Directory Tree
 ```
 .
-├── data
-│   ├── study1.csv
-│   ├── study1_measured_mood.csv
-│   └── study2.csv
-├── step1_data_pre-processing
-│   ├── study1_pre-processing.R
-│   ├── study2_induction_check.R
-│   └── study2_pre-processing.R
-├── step2_Fitting_HDDM_study_1.ipynb
-├── step3_Inference_testing_study_1.ipynb
-├── step4_Fitting_regression_study_2.ipynb
-├── step5_Inference_testing_study_2.ipynb
-├── step6_Cell_means_study_2.ipynb
-├── step7_convergence_test
-│   ├── convergence_study1.ipynb
-│   └── convergence_study2.ipynb
-└── step8_plot
-    ├── plots.ipynb
-    ├── study1_correlation_traces.csv
-    ├── study_1_ddm_confirmative_analysis.csv
-    ├── study_1_ddm_exploratory_analysis.csv
-    ├── study2_cell_mean_trace_df.csv
-    └── study2_full_regression_hypothesis.csv
+.
+├── ddm_analysis
+│   ├── data
+│   │   ├── study1.csv
+│   │   ├── study1_measured_mood.csv
+│   │   └── study2.csv
+│   ├── step1_data_pre-processing
+│   │   ├── study1_pre-processing.R
+│   │   ├── study2_induction_check.R
+│   │   └── study2_pre-processing.R
+│   ├── step2_Fitting_HDDM_study_1.ipynb
+│   ├── step3_Inference_testing_study_1.ipynb
+│   ├── step4_Fitting_regression_study_2.ipynb
+│   ├── step5_Inference_testing_study_2.ipynb
+│   ├── step6_Cell_means_study_2.ipynb
+│   ├── step7_convergence_test
+│   │   ├── convergence_study1.ipynb
+│   │   └── convergence_study2.ipynb
+│   └── step8_plot
+│       ├── plots.ipynb
+│       ├── study1_correlation_traces.csv
+│       ├── study_1_ddm_confirmative_analysis.csv
+│       ├── study_1_ddm_exploratory_analysis.csv
+│       ├── study2_cell_mean_trace_df.csv
+│       └── study2_full_regression_hypothesis.csv
+├── decision_task_pavlovia
+│   ├── study_1
+│   │   ├── index.html
+│   │   ├── media_decision_making.js
+│   │   ├── README.txt
+│   │   └── resources
+│   │       ├── SAM
+│   │       │   ├── ...
+│   │       └── texts
+│   │           ├── ...
+│   └── study_2
+│       ├── index.html
+│       ├── media_decision_making_group_1.js
+│       └── resources
+│           └── README.m
+├── generate_summaries
+│   ├── anew
+│   │   ├── anew_sentiment_analysis.py
+│   │   ├── english_shortened.csv
+│   │   └── Output Anew Sentiment movie_summaries.csv
+│   ├── generate_summaries.ipynb
+│   ├── MovieSummaries
+│   │   ├── character.metadata.tsv
+│   │   ├── movie.metadata.tsv
+│   │   ├── name.clusters.txt
+│   │   ├── plot_summaries.txt
+│   │   ├── README.txt
+│   │   └── tvtropes.clusters.txt
+│   ├── movie_summaries_scored_and_selected.ods
+│   ├── movie_summaries.txt
+│   └── plot_summaries.txt
+├── LICENSE
+├── README.md
+└── summary_scoring
+    ├── combo.csv
+    ├── raw_text.csv
+    └── reading_ease.ipynb
+
 ```
 
 ## Generate Movie Plot Summaries
