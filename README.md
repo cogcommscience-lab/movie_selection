@@ -10,6 +10,9 @@ This code takes a corpus of movie summaries and uses NLP to reduce these summari
 * [Text Summarization with NLTK in Python](https://stackabuse.com/text-summarization-with-nltk-in-python/)
 * [Sentiment Analysis Using ANEW](https://github.com/dwzhou/SentimentAnalysis)
 
+## Summary Scoring
+Code to analyze the read easiness of the generated movie summaries. 
+
 ## Decision Task Pavlovia
 The code to replicate the movie decision making task on Pavlovia. This experiment is implemented by [PsychJS](https://www.psychopy.org/online/psychojsCode.html), and hosted on [Pavlovia](https://pavlovia.org/).
 
