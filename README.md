@@ -89,6 +89,13 @@ The code to replicate the analysis are organized in sequential steps.
 ### Data directory
 Data csv files are pre-processed data, which is the output of step-1. 
 
+subj_idx: index for each subject
+stim: decision type
+rt: reaction time
+response: 1 if higher boundary choice selected, 0 if lower boundary choice selected
+mood_valence_measured: measured mood valence for each participant in each block
+mood_arousal_measured: measured mood arousal for each participant in each block
+
 ### Step 1 Data pre-processing
 *R*
 
