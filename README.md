@@ -13,6 +13,7 @@ A project organized around understanding decision making and movie selection.
 │   ├── step1_data_pre-processing
 │   │   ├── study1_pre-processing.R
 │   │   ├── study2_induction_check.R
+│   │   ├── stimulus_check.R
 │   │   └── study2_pre-processing.R
 │   ├── step2_Fitting_HDDM_study_1.ipynb
 │   ├── step3_Inference_testing_study_1.ipynb
@@ -101,7 +102,7 @@ mood_arousal_measured: measured mood arousal for each participant in each block
 
 Input file is raw data files collected from Qualtrics and Pavlovia. 
 The code pre-processes the raw data into csv files for study 1 and study 2.
-It also includes an R-script for the induction check, including the plot and ANOVA testing. 
+It also includes an R-script for the induction check & stimulus check, including the plot and ANOVA testing. 
 
 ### Step 2 (study 1) & 4 (study 2) Model fitting
 *Jupyter Notebook*
