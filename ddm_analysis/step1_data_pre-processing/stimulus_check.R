@@ -60,45 +60,93 @@ stimulus_check_s2$key_resp_excited_test.keys <- as.numeric(stimulus_check_s2$key
 stimulus_check <- dplyr::bind_rows(stimulus_check_s1, stimulus_check_s2)
 stimulus_check$study <- as.factor(stimulus_check$study)
 
+# create averaged dataframe
+mean_summary_df <- stimulus_check %>% group_by(study, participant, valence, arousal) %>% 
+  summarize(mean_valence = mean(key_resp_sad_test.keys),
+            mean_arousal = mean(key_resp_excited_test.keys)) %>%
+  ungroup()
+
 # repeated measure ANOVA test
 # within variables as ratings for either High (1) valence/arousal or Low (0) valence/arousal
 
-library(nlme)
-# test for arousal - study 1
-m1 <- lme(key_resp_excited_test.keys~arousal*valence,
-          random=~1|participant,
-          data=stimulus_check_s1)
-anova(m1)
+
 # test for valence - study 1
-m2 <- lme(key_resp_sad_test.keys~valence*arousal,
-          random=~1|participant,
-          data=stimulus_check_s1)
-anova(m2)
-# test for arousal - study 2
-m3 <- lme(key_resp_excited_test.keys~arousal*valence,
-          random=~1|participant,
-          data=stimulus_check_s2)
-anova(m3)
+res.aov <- anova_test(data = mean_summary_df[mean_summary_df$study==1,],
+                      dv = mean_valence,
+                      wid = participant,
+                      within = c(arousal, valence))
+get_anova_table(res.aov)
+pwc <- mean_summary_df[mean_summary_df$study==1,] %>%
+  pairwise_t_test(
+    mean_valence ~ valence, paired = TRUE
+  )
+pwc
+
+# test for arousal - study 1
+res.aov <- anova_test(data = mean_summary_df[mean_summary_df$study==1,],
+                      dv = mean_arousal,
+                      wid = participant,
+                      within = c(arousal, valence))
+get_anova_table(res.aov)
+pwc <- mean_summary_df[mean_summary_df$study==1,] %>%
+  pairwise_t_test(
+    mean_arousal ~ arousal, paired = TRUE
+  )
+pwc
+
 # test for valence - study 2
-m4 <- lme(key_resp_sad_test.keys~arousal*valence, 
-          random=~1|participant,
-          data=stimulus_check_s2)
-anova(m4)
+res.aov <- anova_test(data = mean_summary_df[mean_summary_df$study==2,],
+                      dv = mean_valence,
+                      wid = participant,
+                      within = c(arousal, valence))
+get_anova_table(res.aov)
+pwc <- mean_summary_df[mean_summary_df$study==1,] %>%
+  pairwise_t_test(
+    mean_valence ~ valence, paired = TRUE
+  )
+pwc
+
+# test for arousal - study 2
+res.aov <- anova_test(data = mean_summary_df[mean_summary_df$study==2,],
+                      dv = mean_arousal,
+                      wid = participant,
+                      within = c(arousal, valence))
+get_anova_table(res.aov)
+pwc <- mean_summary_df[mean_summary_df$study==2,] %>%
+  pairwise_t_test(
+    mean_arousal ~ arousal, paired = TRUE
+  )
+pwc
 
 
 
 # plot the boxplots for the stimulus check 
 # Figure S3
-p1 <- stimulus_check %>% 
-  ggplot(aes(x=study, y=key_resp_sad_test.keys, fill=valence)) + 
+p1 <- mean_summary_df %>%
+  ggplot(aes(x=study, y=mean_valence, fill=valence)) + 
   geom_boxplot() + labs(y = "Measured valence",
-                        title = "Valence")
+                        fill = "Valence",
+                        x="Study",
+                        title = "Valence") +
+  scale_fill_discrete(labels = c("Negative", "Positive"))+
+  geom_signif(
+    y_position = c(5.3, 5.3), xmin = c(0.8, 1.8), xmax = c(1.2, 2.2),
+    annotation = c("***", "***"), tip_length = 0.02
+  )
 p1
-p2 <- ggplot(stimulus_check, aes(x=study, y=key_resp_excited_test.keys, fill=arousal)) + 
-  geom_boxplot() + labs(y = "Measured arousal",
-                        title = "Arousal")
-p2
 
+p2 <- mean_summary_df %>%
+  ggplot(aes(x=study, y=mean_arousal, fill=arousal)) + 
+  geom_boxplot() + labs(y = "Measured arousal",
+                        fill = "Arousal",
+                        x="Study",
+                        title = "Arousal") +
+  scale_fill_discrete(labels = c("Low", "High")) +
+  geom_signif(
+    y_position = c(5.3, 5.3), xmin = c(0.8, 1.8), xmax = c(1.2, 2.2),
+    annotation = c("***", "***"), tip_length = 0.02
+  )
+p2
 grid.arrange(p1,p2, nrow=1)
 
 
