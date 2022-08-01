@@ -4,7 +4,7 @@ This repo contains demo code for creating an experiment using [PsychoJS](https:/
 
 The files should be contained and hosted on [Pavlovia](https://pavlovia.org/).
 
-The experiment file is ```html/media_decision_making.js```
+The experiment file is ```media_decision_making.js```
 
 ## Steps for experiment building
 
