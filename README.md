@@ -24,12 +24,16 @@ A project organized around understanding decision making and movie selection.
 │   │   ├── convergence_study1.ipynb
 │   │   └── convergence_study2.ipynb
 │   └── step8_plot
-│       ├── plots.ipynb
-│       ├── study1_correlation_traces.csv
-│       ├── study_1_ddm_confirmative_analysis.csv
-│       ├── study_1_ddm_exploratory_analysis.csv
-│       ├── study2_cell_mean_trace_df.csv
-│       └── study2_full_regression_hypothesis.csv
+│   │   ├── plots.ipynb
+│   │   ├── study1_correlation_traces.csv
+│   │   ├── study_1_ddm_confirmative_analysis.csv
+│   │   ├── study_1_ddm_exploratory_analysis.csv
+│   │   ├── study2_cell_mean_trace_df.csv
+│   │   └── study2_full_regression_hypothesis.csv
+|   └── study3_analysis
+│       ├──s3_analysis.ipynb
+|       ├──s3_data_preprocessing.R
+│       └──study3.csv
 ├── decision_task_pavlovia
 │   ├── study_1
 │   │   ├── index.html
