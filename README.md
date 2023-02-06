@@ -9,11 +9,13 @@ A project organized around understanding decision making and movie selection.
 │   ├── data
 │   │   ├── study1.csv
 │   │   ├── study1_measured_mood.csv
-│   │   └── study2.csv
+│   │   ├── study2.csv
+│   │   └── study3.csv
+│   ├── power_simulate_HDDM.ipynb
 │   ├── step1_data_pre-processing
+│   │   ├── stimulus_check.R
 │   │   ├── study1_pre-processing.R
 │   │   ├── study2_induction_check.R
-│   │   ├── stimulus_check.R
 │   │   └── study2_pre-processing.R
 │   ├── step2_Fitting_HDDM_study_1.ipynb
 │   ├── step3_Inference_testing_study_1.ipynb
@@ -23,30 +25,28 @@ A project organized around understanding decision making and movie selection.
 │   ├── step7_convergence_test
 │   │   ├── convergence_study1.ipynb
 │   │   └── convergence_study2.ipynb
-│   └── step8_plot
-│   │   ├── plots.ipynb
-│   │   ├── study1_correlation_traces.csv
-│   │   ├── study_1_ddm_confirmative_analysis.csv
-│   │   ├── study_1_ddm_exploratory_analysis.csv
-│   │   ├── study2_cell_mean_trace_df.csv
-│   │   └── study2_full_regression_hypothesis.csv
-|   └── study3_analysis
-│       ├──s3_analysis.ipynb
-|       ├──s3_data_preprocessing.R
-│       └──study3.csv
+│   ├── step8_plot
+│   │   ├── plots.ipynb
+│   │   ├── study1_correlation_traces.csv
+│   │   ├── study_1_ddm_confirmative_analysis.csv
+│   │   ├── study_1_ddm_exploratory_analysis.csv
+│   │   ├── study2_cell_mean_trace_df.csv
+│   │   └── study2_full_regression_hypothesis.csv
+│   └── study3_analysis
+│       ├── s3_analysis.ipynb
+│       ├── s3_data_preprocessing.R
+│       └── study3.csv
 ├── decision_task_pavlovia
 │   ├── study_1
 │   │   ├── index.html
 │   │   ├── media_decision_making.js
-│   │   ├── README.txt
+│   │   ├── README.md
 │   │   └── resources
-│   │       ├── SAM
-│   │       │   ├── ...
-│   │       └── texts
-│   │           ├── ...
+│   │       └── SAM
 │   └── study_2
 │       ├── index.html
 │       ├── media_decision_making_group_1.js
+│       ├── README.md
 │       └── resources
 │           └── README.m
 ├── generate_summaries
