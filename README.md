@@ -1,6 +1,23 @@
 # movie_selection
 A project organized around understanding decision making and movie selection.
 
+# Tips for install hddm
+There have been troubles installing HDDM, due to the incompatibility between the PyMC version that HDDM uses and the lasted version of PyMC. 
+Here is a complete list of code that has been tested in Linux environment for installing HDDM and its dependencies. 
+
+```
+conda create -n "hddm_test" python==3.7.0
+conda activate hddm_test
+conda install pymc==2.3.8
+conda install pandas patsy
+pip install hddm
+conda install jupyterlab
+```
+
+If you still have troubles, please refer to the [official repo](https://github.com/hddm-devs/hddm) of HDDM, and its [website](https://hddm.readthedocs.io/en/latest/). 
+
+You may also find the [discussion](https://groups.google.com/g/hddm-users) page helpful.
+
 ## Directory Tree
 ```
 .
